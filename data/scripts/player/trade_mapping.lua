@@ -25,11 +25,17 @@ end
 
 function toSector(s) -- modified version of https://stackoverflow.com/a/37601779/1025177
 	if type(s) ~= "string" then return s end
-    local t = {}
-    for m in s:gmatch("[^ ,()]+") do
-    	t[#t+1] = tonumber(m)
-    end
-    return ivec2(t[1], t[2])
+	local t = {}
+	for m in s:gmatch("[^ ,()]+") do
+		t[#t+1] = tonumber(m)
+	end
+	return ivec2(t[1], t[2])
+end
+
+function distanceA(a, b)
+	local dx = a.x - b.x
+	local dy = a.y - b.y
+	return math.sqrt(dx * dx + dy * dy)
 end
 
 ----- client code -----
@@ -44,7 +50,7 @@ if onClient() then
 	local lastX, lastY
 	local container, resolution
 	local filterCombo, selectedFilter
-    local sectorList, listContainer, listRender, listLabels
+  local sectorList, listContainer, listRender, listLabels
 	local lastData, sectorGoodsSorted, knownGoods
 	local lineHeight = 11
 
@@ -130,10 +136,14 @@ if onClient() then
 	end
 
 	function sortSectorDist(sectorV2)
-		sectorV2 = not sectorV2 and GalaxyMap():getSelectedCoordinates() or toSector(sectorV2)
-
+		local testsectorV2 = nil
+		if not sectorV2 then
+			testsectorV2 = GalaxyMap():getSelectedCoordinates()
+		else
+			testsectorV2 = toSector(sectorV2)
+		end
 		table.sort(sectorList, function(a, b)
-			return distance(sectorV2, a.sector) < distance(sectorV2, b.sector)
+			return distanceA(testsectorV2, a.sector) < distanceA(testsectorV2, b.sector)
 		end)
 	end
 
@@ -436,7 +446,7 @@ if onServer() then
 	function TradeMapping.getData(playerIndex)
 		local player = Player(callingPlayer)
 		if not player or player.index ~= playerIndex then
-			eprint("received an unmatching player call: "..playerIndex.." vs calling "..(player and player.index or "nil"))
+			print("received an unmatching player call: "..playerIndex.." vs calling "..(player and player.index or "nil"))
 			return
 		end
 		invokeClientFunction(player, "getData", data)

@@ -6,19 +6,19 @@ if onClient() then
   function MapCommands.initUI()
     tm_initUI()
 
-	sellFilterTextBox.clearOnClick = true
-	sellAmountTextBox.clearOnClick = true
+	  sellFilterTextBox.clearOnClick = true
+	  sellAmountTextBox.clearOnClick = true
 
-	buyFilterTextBox.clearOnClick = true
+	  buyFilterTextBox.clearOnClick = true
     buyAmountTextBox.clearOnClick = true
 
     windowsPresent = MapCommands.addWindow ~= nil
   end
 
   function MapCommands.onBuyGoodsPressed()
-	enqueueNextOrder = MapCommands.isEnqueueing()
+	  enqueueNextOrder = MapCommands.isEnqueueing()
 
-	MapCommands.fillTradeCombo(buyCombo, buyFilterTextBox.text)
+	  MapCommands.fillTradeCombo(buyCombo, buyFilterTextBox.text)
 
     if windowsPresent then
 	  MapCommands.hideWindows()
