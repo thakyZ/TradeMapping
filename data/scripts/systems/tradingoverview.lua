@@ -9,13 +9,13 @@ function onUninstalled(seed, rarity, permanent)
 end
 
 function gatherData()
-    return TradingUtility.detectBuyableAndSellableGoods(_, _, true)
+  return TradingUtility.detectBuyableAndSellableGoods(_, _, true)
 end
 
 function collectSectorData()
-    if not tradingData then return end
-    local sellable, buyable = gatherData()
-	local debug = false
+  if not tradingData then return end
+ 	local sellable, buyable = gatherData()
+	local debug = true
 
 
 	-- don't run while the server is still starting up
@@ -115,10 +115,27 @@ function collectSectorData()
 		-- printTable(sellable)
 		-- printTable(buyable)
 		printTable(goods_data)
-		print(callingPlayer, Player(callingPlayer).index)
+		if callingPlayer then
+			print(callingPlayer, Player(callingPlayer).index)
+		else
+			local entity = Entity()
+			print(goods_data.entity, entity:getPilotIndices() )
+		end
 	end
 
-	invokeFactionFunction(Player(callingPlayer).index, true, "data/scripts/player/trade_mapping.lua", "setData", goods_data)
+	if callingPlayer then
+		invokeFactionFunction(Player(callingPlayer).index, true, "data/scripts/player/trade_mapping.lua", "setData", goods_data)
+	else
+		local entity = Entity()
+		local pilots = entity:getPilotIndices()
+		if pilots == 1 then
+			invokeFactionFunction(Player(pilots).index, true, "data/scripts/player/trade_mapping.lua", "setData", goods_data)
+		elseif pilots > 1 then
+			for i = 1,pilots.length do
+				invokeFactionFunction(Player(pilots[i]).index, true, "data/scripts/player/trade_mapping.lua", "setData", goods_data)
+			end
+		end
+	end
 
 	if #buykeys > 0 or #sellkeys > 0 then
 		tradingData:insert({sellable = sellable, buyable = buyable})
