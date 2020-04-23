@@ -278,6 +278,7 @@ if onClient() then
 		listRender = {}
 
 		local list = UIVerticalLister(Rect(vec2(4, 0), vec2(270, lineHeight)), 5, 0)
+		list:nextRect(lineHeight)
 
 		listContainer:show()
 		listContainer:clear()
@@ -297,8 +298,7 @@ if onClient() then
 				listLabels[lbl.index] = lbl
 
 				rect.lower = rect.lower + vec2(list.inner.width * 0.75, 0)
-				local lbl = listContainer:createLabel(rect, lastData[tostring(coords)][selection][g].best_price,
-					lineHeight)
+				local lbl = listContainer:createLabel(rect, lastData[tostring(coords)][selection][g].best_price, lineHeight)
 				lbl.color = colList
 				lbl:setRightAligned()
 			end

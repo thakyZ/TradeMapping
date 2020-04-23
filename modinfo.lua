@@ -8,7 +8,7 @@ meta =
 
     -- Name of your mod; You may want this to be unique, but it's not absolutely necessary.
     -- This is an additional helper attribute for you to easily identify your mod in the Mods() list
-    name = "TradeMapping",
+    name = "NekoBoiNick.TradeMapping",
 
     -- Title of your mod that will be displayed to players
     title = "Trade Mapping",
@@ -24,7 +24,7 @@ meta =
 
     -- Version of your mod, should be in format 1.0.0 (major.minor.patch) or 1.0 (major.minor)
     -- This will be used to check for unmet dependencies or incompatibilities
-    version = "1.2.0",
+    version = "1.2.1",
 
     -- If your mod requires dependencies, enter them here. The game will check that all dependencies given here are met.
     -- Possible attributes:
